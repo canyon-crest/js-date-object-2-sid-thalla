@@ -39,17 +39,22 @@ document.getElementById("warmUpDate").innerHTML = todayname;
 // Example: "4/2/2025" (no leading zeros)
 
 // STEP 6: Create a new Date object (or reuse the one from above).
+const today = new Date();
 
 // STEP 7: Get the month using .getMonth()
 //         IMPORTANT: .getMonth() returns 0–11 (January = 0)
 //         so you must add 1 to get the correct month number.
+const month = today.getMonth() + 1;
 
 // STEP 8: Get the day of the month using .getDate()
+const day = today.getDate();
 
 // STEP 9: Get the year using .getFullYear()
+const year = today.getFullYear();
 
 // STEP 10: Build the date string: month + "/" + day + "/" + year
 //          Display it in the element with ID "myDate"
+document.getElementById("myDate").textContent = month + "/" + day + "/" + year;
 
 
 // ============================================
@@ -61,6 +66,7 @@ document.getElementById("warmUpDate").innerHTML = todayname;
 
 // STEP 11: Record the start time using new Date().getTime()
 //          This gives you the current time in milliseconds.
+let startTime = new Date().getTime();
 
 // STEP 12: Create a variable to hold the timer ID (for stopping later).
 //          Use setInterval() with a delay of 10 milliseconds.
@@ -69,6 +75,13 @@ document.getElementById("warmUpDate").innerHTML = todayname;
 //          b) Calculate elapsed seconds: (currentTime - startTime) / 1000
 //          c) Display the elapsed time using .toFixed(3)
 //             in the element with ID "myTimer"
+let timerId = setInterval(runTimer, 10);
+
+function runTimer() {
+  const currentTime = new Date().getTime();
+  const elapsedSeconds = (currentTime - startTime) / 1000;
+  document.getElementById("myTimer").textContent = elapsedSeconds.toFixed(3);
+}
 
 
 // ============================================
@@ -83,6 +96,7 @@ document.getElementById("warmUpDate").innerHTML = todayname;
 
 // STEP 13: Create a variable to track whether the timer is
 //          currently running (let running = true;)
+let running = true;
 
 // STEP 14: Add a click event listener to the button (ID "myBtn").
 //          Inside the listener:
@@ -95,3 +109,15 @@ document.getElementById("warmUpDate").innerHTML = todayname;
 //             - Start a new setInterval (same as STEP 12)
 //             - Change button innerHTML to "Stop"
 //             - Set running to true
+document.getElementById("myBtn").addEventListener("click", function() {
+  if (running) {
+    clearInterval(timerId);
+    document.getElementById("myBtn").innerHTML = "Start";
+    running = false;
+  } else {
+    startTime = new Date().getTime();
+    timerId = setInterval(runTimer, 10);
+    document.getElementById("myBtn").innerHTML = "Stop";
+    running = true;
+  }
+});
